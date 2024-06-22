@@ -1,0 +1,233 @@
+{%include 'header.html'%}
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+<style>
+  .hide {
+    display: none;
+  }
+</style>
+
+<div class="page-header">
+<div class="row">
+<div class="col-sm-12">
+<ul class="breadcrumb">
+<li class="breadcrumb-item"><a href="assets.html">IT Tools </a></li>
+<li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+<li class="breadcrumb-item active">Add Assets</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-sm-12">
+<div class="card">
+<div class="card-body">
+
+<form action"" method="post">
+{%csrf_token%}
+
+<div class="row">
+<div class="col-12">
+<div class="form-heading">
+<h4>Add Assets</h4>
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms">
+<label>Asset Name <span class="login-danger">*</span></label>
+<input class="form-control" type="text" name="asname" value="{{data.assetname}}">
+</div>
+</div>
+
+
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms">
+<label>Asset Id <span class="login-danger">*</span></label>
+<input class="form-control" type="text" name="asid" value="{{data.assetID}}">
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6">
+    <div class="form-group local-forms">
+        <label>Status <span class="login-danger">*</span></label>
+        <select class="form-control select" name="ascat" >
+            <option value="None" {% if data.assetcat == 'None' %}selected{% endif %}>Asset Category</option>
+            <option value="Asset" {% if data.assetcat == 'Asset' %}selected{% endif %}>Asset</option>
+            <option value="Accessories" {% if data.assetcat == 'Accessories' %}selected{% endif %}>Accessories</option>
+        </select>
+    </div>
+</div>
+
+
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms cal-icon">
+<label>Purchase Date <span class="login-danger">*</span></label>
+<input class="form-control datetimepicker" type="text" placeholder="" value="{{data.purchasedate}}" name="pdate">
+</div>
+</div>
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms">
+<label>Purchase From <span class="login-danger">*</span></label>
+<input class="form-control" type="text" value="{{data.purchasefrom}}" name="pfrom">
+</div>
+</div>
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms">
+<label>Manufacturer <span class="login-danger">*</span></label>
+<input class="form-control" type="text" value="{{data.manufacturer}}" name="manft">
+</div>
+</div>
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms">
+<label>Model <span class="login-danger">*</span></label>
+<input class="form-control" type="text" value="{{data.model}}" name="model">
+</div>
+</div>
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms">
+<label>Serial Number <span class="login-danger">*</span></label>
+<input class="form-control" type="text" value="{{data.serialno}}" name="sno">
+</div>
+</div>
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms">
+<label>Invoice Number <span class="login-danger">*</span></label>
+<input class="form-control" type="text" value="{{data.invono}}" name="inv">
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms">
+<label>Warranty<span class="login-danger">*</span></label>
+<input class="form-control" type="text" value="{{data.warranty}}"  name="wrnty">
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms">
+<label>Value<span class="login-danger">*</span></label>
+<input class="form-control" type="text" value="{{data.value}}" name="value">
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms" >
+<label>Status <span class="login-danger " >*</span></label>
+<select class=" form-control" name="status" id="options" required>
+<option value="{{data.status}}" >Select Status</option>
+<option value="In Use" {% if data.status  == 'In Use' %} selected {% endif %}> In Use    </option>
+<option value="Stock" {% if data.status == 'Stock' %} selected {% endif %}> 	 Stock    </option>
+<option value="Disposed" {% if data.status == 'Disposed' %} Selected {% endif %}>Disposed</option>
+</select>
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6 hide in-use-tab">
+<div class="form-group local-forms">
+<label>Day User<span class="login-danger">*</span></label>
+<input class="form-control" type="text" name="dayuser">
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6 hide in-use-tab">
+<div class="form-group local-forms">
+<label>Night User<span class="login-danger">*</span></label>
+<input class="form-control" type="text" name="nightuser">
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6 hide in-use-tab">
+<div class="form-group local-forms">
+<label>Given BY<span class="login-danger">*</span></label>
+<input class="form-control" type="text" name="gby">
+</div>
+</div>
+
+<div class="col-12 hide dispose-tab">
+<div class="form-heading">
+<h4>Disposal Status</h4>
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6 hide dispose-tab">
+<div class="form-group local-forms">
+<label>Status <span class="login-danger">*</span></label>
+<select class="form-control select" name="dsts" >
+<option>Select Status</option>
+<option>Not Working </option>
+<option>Damaged    </option>
+<option>Moved to Scrap</option>
+</select>
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6 hide dispose-tab">
+<div class="form-group local-forms cal-icon">
+<label>Demolished Date <span class="login-danger">*</span></label>
+<input class="form-control datetimepicker" type="text" placeholder="" name="ddate" >
+</div>
+</div>
+
+<div class="col-12 col-sm-12 hide dispose-tab">
+<div class="form-group local-forms">
+<label>Description <span class="login-danger">*</span></label>
+<textarea class="form-control" rows="3" cols="30" name="des"></textarea>
+</div>
+</div>
+
+<div class="col-12">
+<div class="doctor-submit text-end">
+<button type="submit" class="btn btn-primary submit-form me-2">Submit</button>
+<a href="{% url 'itassetlist' %}" class="btn btn-primary cancel-form">Cancel</a>
+</div>
+</div>
+
+</form>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="sidebar-overlay" data-reff=""></div>
+
+</body>
+<script src="{% static 'assets/js/bootstrap-datetimepicker.min.js' %}"></script>
+
+<script>
+  const optionSelect = document.getElementById('options');
+  const disposeTabs = document.querySelectorAll('.dispose-tab');
+  const inUseTabs = document.querySelectorAll('.in-use-tab');
+
+  optionSelect.addEventListener('change', function() {
+    if (optionSelect.value === 'Disposed') {
+      disposeTabs.forEach(tab => {
+        tab.style.display = 'block';
+      });
+      inUseTabs.forEach(tab => {
+        tab.style.display = 'none';
+      });
+    } else if (optionSelect.value === 'In Use') {
+      inUseTabs.forEach(tab => {
+        tab.style.display = 'block';
+      });
+      disposeTabs.forEach(tab => {
+        tab.style.display = 'none';
+      });
+    } else {
+      disposeTabs.forEach(tab => {
+        tab.style.display = 'none';
+      });
+      inUseTabs.forEach(tab => {
+        tab.style.display = 'none';
+      });
+    }
+  });
+</script>  
+</html>
