@@ -16,30 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `asset_cred`
+-- Table structure for table `asset_customuser_groups`
 --
 
-DROP TABLE IF EXISTS `asset_cred`;
+DROP TABLE IF EXISTS `asset_customuser_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asset_cred` (
+CREATE TABLE `asset_customuser_groups` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `emp_id` varchar(50) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `dept` varchar(50) NOT NULL,
+  `customuser_id` bigint NOT NULL,
+  `group_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `emp_id` (`emp_id`)
+  UNIQUE KEY `asset_customuser_groups_customuser_id_group_id_f02872d3_uniq` (`customuser_id`,`group_id`),
+  KEY `asset_customuser_groups_group_id_4a6713df_fk_auth_group_id` (`group_id`),
+  CONSTRAINT `asset_customuser_gro_customuser_id_34dbbb22_fk_asset_cus` FOREIGN KEY (`customuser_id`) REFERENCES `asset_customuser` (`id`),
+  CONSTRAINT `asset_customuser_groups_group_id_4a6713df_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asset_cred`
+-- Dumping data for table `asset_customuser_groups`
 --
 
-LOCK TABLES `asset_cred` WRITE;
-/*!40000 ALTER TABLE `asset_cred` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asset_cred` ENABLE KEYS */;
+LOCK TABLES `asset_customuser_groups` WRITE;
+/*!40000 ALTER TABLE `asset_customuser_groups` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asset_customuser_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-20  1:49:04
+-- Dump completed on 2024-06-29 15:58:30

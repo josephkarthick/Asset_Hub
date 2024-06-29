@@ -37,7 +37,7 @@ CREATE TABLE `django_admin_log` (
   CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_asset_customuser_id` FOREIGN KEY (`user_id`) REFERENCES `asset_customuser` (`id`),
   CONSTRAINT `django_admin_log_chk_1` CHECK ((`action_flag` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `django_admin_log` (
 
 LOCK TABLES `django_admin_log` WRITE;
 /*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
-INSERT INTO `django_admin_log` VALUES (1,'2024-06-21 15:27:42.082670','1','Dashboard',1,'[{\"added\": {}}]',7,1),(2,'2024-06-21 15:31:11.968928','2','CPU',1,'[{\"added\": {}}]',7,1),(3,'2024-06-21 15:40:20.402091','3','Monitor',1,'[{\"added\": {}}]',7,1);
+INSERT INTO `django_admin_log` VALUES (1,'2024-06-21 15:27:42.082670','1','Dashboard',1,'[{\"added\": {}}]',7,1),(2,'2024-06-21 15:31:11.968928','2','CPU',1,'[{\"added\": {}}]',7,1),(3,'2024-06-21 15:40:20.402091','3','Monitor',1,'[{\"added\": {}}]',7,1),(4,'2024-06-27 11:05:21.090693','4','Software-windows',1,'[{\"added\": {}}]',7,1);
 /*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-22 17:22:18
+-- Dump completed on 2024-06-29 15:58:31

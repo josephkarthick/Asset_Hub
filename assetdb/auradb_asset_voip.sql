@@ -16,31 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `asset_customuser_groups`
+-- Table structure for table `asset_voip`
 --
 
-DROP TABLE IF EXISTS `asset_customuser_groups`;
+DROP TABLE IF EXISTS `asset_voip`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asset_customuser_groups` (
+CREATE TABLE `asset_voip` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `customuser_id` bigint NOT NULL,
-  `group_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `asset_customuser_groups_customuser_id_group_id_f02872d3_uniq` (`customuser_id`,`group_id`),
-  KEY `asset_customuser_groups_group_id_4a6713df_fk_auth_group_id` (`group_id`),
-  CONSTRAINT `asset_customuser_gro_customuser_id_34dbbb22_fk_asset_cus` FOREIGN KEY (`customuser_id`) REFERENCES `asset_customuser` (`id`),
-  CONSTRAINT `asset_customuser_groups_group_id_4a6713df_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `vendor` varchar(50) DEFAULT NULL,
+  `callbacknumber` varchar(50) DEFAULT NULL,
+  `usernumber` varchar(50) DEFAULT NULL,
+  `domain` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `dop` varchar(50) DEFAULT NULL,
+  `remarks` varchar(50) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asset_customuser_groups`
+-- Dumping data for table `asset_voip`
 --
 
-LOCK TABLES `asset_customuser_groups` WRITE;
-/*!40000 ALTER TABLE `asset_customuser_groups` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asset_customuser_groups` ENABLE KEYS */;
+LOCK TABLES `asset_voip` WRITE;
+/*!40000 ALTER TABLE `asset_voip` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asset_voip` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-22 17:22:18
+-- Dump completed on 2024-06-29 15:58:31

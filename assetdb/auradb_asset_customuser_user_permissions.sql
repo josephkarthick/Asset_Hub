@@ -16,38 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `asset_customuser`
+-- Table structure for table `asset_customuser_user_permissions`
 --
 
-DROP TABLE IF EXISTS `asset_customuser`;
+DROP TABLE IF EXISTS `asset_customuser_user_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asset_customuser` (
+CREATE TABLE `asset_customuser_user_permissions` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `password` varchar(128) NOT NULL,
-  `last_login` datetime(6) DEFAULT NULL,
-  `is_superuser` tinyint(1) NOT NULL,
-  `username` varchar(150) NOT NULL,
-  `first_name` varchar(150) NOT NULL,
-  `last_name` varchar(150) NOT NULL,
-  `email` varchar(254) NOT NULL,
-  `is_staff` tinyint(1) NOT NULL,
-  `is_active` tinyint(1) NOT NULL,
-  `date_joined` datetime(6) NOT NULL,
-  `department` varchar(50) DEFAULT NULL,
+  `customuser_id` bigint NOT NULL,
+  `permission_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `asset_customuser_user_pe_customuser_id_permission_5f27252b_uniq` (`customuser_id`,`permission_id`),
+  KEY `asset_customuser_use_permission_id_174461f6_fk_auth_perm` (`permission_id`),
+  CONSTRAINT `asset_customuser_use_customuser_id_a04b7d3b_fk_asset_cus` FOREIGN KEY (`customuser_id`) REFERENCES `asset_customuser` (`id`),
+  CONSTRAINT `asset_customuser_use_permission_id_174461f6_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asset_customuser`
+-- Dumping data for table `asset_customuser_user_permissions`
 --
 
-LOCK TABLES `asset_customuser` WRITE;
-/*!40000 ALTER TABLE `asset_customuser` DISABLE KEYS */;
-INSERT INTO `asset_customuser` VALUES (1,'pbkdf2_sha256$720000$YLhUVJjwuD1yEVVBsVNzBR$Um7hhgVNgdSczqGI35YJNbRIbXi1OojanzLX+NDBc1c=','2024-02-19 20:11:52.994430',1,'abspl188','Karthick','Raja','karthick.t@aurabpo.com',1,1,'2024-02-12 14:23:43.000000','IT');
-/*!40000 ALTER TABLE `asset_customuser` ENABLE KEYS */;
+LOCK TABLES `asset_customuser_user_permissions` WRITE;
+/*!40000 ALTER TABLE `asset_customuser_user_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asset_customuser_user_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -59,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-20  1:49:05
+-- Dump completed on 2024-06-29 15:58:31
