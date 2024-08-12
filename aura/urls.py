@@ -38,6 +38,7 @@ urlpatterns = [
     
     path ('search/<id>', views.search, name='search'),
     path ('addvoip', views.addvoip, name='addvoip'),
+    path ('enduser', views.enduser, name='enduser'),
     path ('voiplist', views.voiplist, name='voiplist'),
     path ('edit_voip/<sno>', views.edit_voip, name='edit_voip'),
     path ('delete_voip/<sno>', views.delvoip, name='delete_voip'),
@@ -46,6 +47,5 @@ urlpatterns = [
     path('download-excel/', views.download_excel, name='download-excel'),
     path('voip_ex/', views.voip_ex, name='voip_ex'),
     path('pdf/<sno>', views.pdf, name='pdf'),
-    path('<path:asset_name>/',views.stus, name='stus'),
-    path('yrfillter/', views.yrfillter, name='yrfillter'),
+
 ]

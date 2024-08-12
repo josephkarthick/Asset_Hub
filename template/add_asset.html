@@ -8,6 +8,30 @@
   .hide {
     display: none;
   }
+
+.messages {
+    margin: 10px 0;
+}
+
+.alert {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+  
 </style>
 
 <div class="page-header">
@@ -21,6 +45,13 @@
 </div>
 </div>
 </div>
+{% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
 
 <div class="row">
 <div class="col-sm-12">
@@ -39,117 +70,148 @@
 
 
 <div class="col-12 col-md-6 col-xl-6">
-<div class="form-group local-forms">
-<label>Asset Name <span class="login-danger">*</span></label>
-<input class="form-control" type="text" name="asname">
+    <div class="form-group local-forms">
+        <label>Asset Name <span class="login-danger"></span></label>
+        <select class="form-control select" name="asname">
+            <option value="" disabled selected>Select Asset Name</option>
+            {% for assetname in assetnames %}
+                <option value="{{ assetname.name }}">{{ assetname.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('.select').select2({
+        allowClear: true 
+    });
+});
+</script>
+
+<div class="col-12 col-md-6 col-xl-6">
+	<div class="form-group local-forms">
+	<label>Category <span class="login-danger"></span></label>
+		<select class="form-control select" name="ascat">
+			<option value="" disabled selected>Select Asset Category</option>
+		{% for assetcat in assetcats %}			
+			<option title="{{ assetcat.desc }}"> {{ assetcat.name }}</option>
+		{% endfor %}	
+		</select>
+	</div>
 </div>
 
 <div class="col-12 col-md-6 col-xl-6">
 <div class="form-group local-forms">
-<label>Asset Id <span class="login-danger">*</span></label>
+<label>Asset Id <span class="login-danger"></span></label>
 <input class="form-control" type="text" name="asid">
 </div>
 </div>
 
-<div class="col-12 col-md-6 col-xl-6">
-<div class="form-group local-forms">
-<label>Category <span class="login-danger">*</span></label>
-<select class="form-control select" name="ascat">
-<option>Asset Category</option>
-<option>Asset</option>
-<option>Accessories</option>
-</select>
-</div>
-</div>
 
 <div class="col-12 col-md-6 col-xl-6">
 	<div class="form-group local-forms cal-icon">
-		<label>Purchase Date <span class="login-danger">*</span></label>
+		<label>Purchase Date <span class="login-danger"></span></label>
 		<input  type="date" placeholder="" name="dop">
 	</div>
 </div>
 
 
 <div class="col-12 col-md-6 col-xl-6">
-<div class="form-group local-forms">
-<label>Purchase From <span class="login-danger">*</span></label>
-<input class="form-control" type="text" name="pfrom">
+	<div class="form-group local-forms">
+	<label>Category <span class="login-danger"></span></label>
+		<select class="form-control select" name="pfrom">
+			<option value="" disabled selected>Select Vendor</option>
+		{% for vendor in vendors %}			
+			<option title="{{ assetcat.desc }}"> {{ vendor.name }}</option>
+		{% endfor %}	
+		</select>
+	</div>
 </div>
+
+<div class="col-12 col-md-6 col-xl-6">
+	<div class="form-group local-forms">
+	<label>Manufacturer <span class="login-danger"></span></label>
+		<select class="form-control select" name="manft">
+			<option value="" disabled selected>Select Manufacutrer</option>
+		{% for manft in manufactures %}			
+			<option title="{{ assetcat.desc }}"> {{ manft.name }}</option>
+		{% endfor %}	
+		</select>
+	</div>
 </div>
 
 <div class="col-12 col-md-6 col-xl-6">
 <div class="form-group local-forms">
-<label>Manufacturer <span class="login-danger">*</span></label>
-<input class="form-control" type="text" name="manft">
-</div>
-</div>
-
-<div class="col-12 col-md-6 col-xl-6">
-<div class="form-group local-forms">
-<label>Model <span class="login-danger">*</span></label>
+<label>Model <span class="login-danger"></span></label>
 <input class="form-control" type="text" name="model">
 </div>
 </div>
 
 <div class="col-12 col-md-6 col-xl-6">
 <div class="form-group local-forms">
-<label>Serial Number <span class="login-danger">*</span></label>
+<label>Serial Number <span class="login-danger"></span></label>
 <input class="form-control" type="text" name="sno">
 </div>
 </div>
 
 <div class="col-12 col-md-6 col-xl-6">
 <div class="form-group local-forms">
-<label>Invoice Number <span class="login-danger">*</span></label>
+<label>Invoice Number <span class="login-danger"></span></label>
 <input class="form-control" type="text" name="inv">
 </div>
 </div>
 
 <div class="col-12 col-md-6 col-xl-6">
-<div class="form-group local-forms">
-<label>Warranty<span class="login-danger">*</span></label>
-<input class="form-control" type="text" name="wrnty">
-</div>
+	<div class="form-group local-forms">
+	<label>Warranty <span class="login-danger"></span></label>
+		<select class="form-control select" name="warranty">
+			<option value="" disabled selected>Select Warranty</option>
+		{% for wrnty in wrntys %}			
+			<option title="{{ wrnty.desc }}"> {{ wrnty.name }}</option>
+		{% endfor %}	
+		</select>
+	</div>
 </div>
 
 <div class="col-12 col-md-6 col-xl-6">
 <div class="form-group local-forms">
-<label>Value<span class="login-danger">*</span></label>
+<label>Value<span class="login-danger"></span></label>
 <input class="form-control" type="text" name="value">
 </div>
 </div>
 
 
 <div class="col-12 col-md-6 col-xl-6">
-<div class="form-group local-forms" >
-<label>Status <span class="login-danger " >*</span></label>
-<select class=" form-control" name="status" id="options" required>
-<option value="None" >Select Status</option>
-<option value="In Use"> In Use    </option>
-<option value="Stock"> 	 Stock    </option>
-<option value="Disposed">Disposed</option>
-</select>
+    <div class="form-group local-forms">
+        <label>Status <span class="login-danger">*</span></label>
+        <select class="form-control" name="status" id="options" required>
+            <option value="" disabled selected>Select Status</option>
+            <option value="In Use">In Use</option>
+            <option value="Stock">Stock</option>
+            <option value="Disposed">Disposed</option>
+        </select>
+    </div>
 </div>
-</div>
+
 
 <div class="col-12 col-md-6 col-xl-6 hide in-use-tab">
 <div class="form-group local-forms">
-<label>Day User<span class="login-danger">*</span></label>
+<label>Day User<span class="login-danger"></span></label>
 <input class="form-control" type="text" name="dayuser">
 </div>
 </div>
 
 <div class="col-12 col-md-6 col-xl-6 hide in-use-tab">
 <div class="form-group local-forms">
-<label>Night User<span class="login-danger">*</span></label>
+<label>Night User<span class="login-danger"></span></label>
 <input class="form-control" type="text" name="nightuser">
 </div>
 </div>
 
 <div class="col-12 col-md-6 col-xl-6 hide in-use-tab">
 <div class="form-group local-forms">
-<label>Given BY<span class="login-danger">*</span></label>
+<label>Given BY<span class="login-danger"></span></label>
 <input class="form-control" type="text" name="gby">
 </div>
 </div>
@@ -162,7 +224,7 @@
 
 <div class="col-12 col-md-6 col-xl-6 hide dispose-tab">
 <div class="form-group local-forms">
-<label>Status <span class="login-danger">*</span></label>
+<label>Status <span class="login-danger"></span></label>
 <select class="form-control select" name="dsts" >
 <option>Select Status</option>
 <option>Not Working </option>
@@ -174,14 +236,14 @@
 
 <div class="col-12 col-md-6 col-xl-6 hide dispose-tab">
 <div class="form-group local-forms cal-icon">
-<label>Demolished Date <span class="login-danger">*</span></label>
+<label>Demolished Date <span class="login-danger"></span></label>
 <input  type="date" placeholder="" name="ddate" >
 </div>
 </div>
 
 <div class="col-12 col-sm-12 hide dispose-tab">
 <div class="form-group local-forms">
-<label>Description <span class="login-danger">*</span></label>
+<label>Description <span class="login-danger"></span></label>
 <textarea class="form-control" rows="3" cols="30" name="des"></textarea>
 </div>
 </div>

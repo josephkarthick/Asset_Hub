@@ -38,12 +38,12 @@
     </div>
 
     <div class="row">
-	
+
         {% for asset_name, asset_data in showassets.items %}
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                 <div class="dash-widget">
 				<!--	<a class="dropdown-item" href=""><i class="fa fa-trash-alt m-r-5"></i></a> -->
-                    <a href="{% url 'stus' asset_name|slugify  %}">
+                    <a href="#">
                         <div class="dash-boxs comman-flex-center">
                             <img src="{% static 'assets/img/icons/' %}{{asset_name}}.svg" alt="">
 							
@@ -60,21 +60,8 @@
                     </div>
                 </div>
             </div>
-        {% endfor %}
+        {% endfor %}		
 	
-	<div class="row">	
-        <div class="col-12 col-md-12 col-lg-6 col-xl-3 d-flex">
-            <div class="card">
-                <div class="card-body">
-                    <div class="chart-title">
-                        <h4>VOIP Details</h4>
-                    </div>
-                    <div id="donut-chart-dash" class="chart-user-icon">
-                        <img src="{% static 'assets/img/icons/Sip.svg' %}" alt="">
-                    </div>
-                </div>
-            </div>
-        </div> 
 		
 <!--	<div class="col-12 col-md-12 col-lg-6 col-xl-9">
 		<div class="card">

@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'aura.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'auradb',
+        'NAME': 'asset_hub_db',
         'USER': 'root',
         'PASSWORD': '@ur@$DataBase',
         'HOST': '127.0.0.1',

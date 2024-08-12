@@ -1,4 +1,4 @@
-from asset.models   import it_asset,voip, cred, dashboard
+from asset.models   import it_asset,voip, cred, dashboard, assetname, assetcat,manufacture, vendor, wrnty
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.db.models.functions import ExtractYear
@@ -11,54 +11,42 @@ from django.contrib import messages
 import openpyxl
 import pdfrw
 from django.utils.dateparse import parse_date
-    
+from django.db import IntegrityError    
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import it_asset, dashboard
+
 @login_required
-def home(request):     
-    sip = voip.objects.all().count
-    sipcount = []  # Initialize an empty list to store counts
-    sipname = voip.objects.values_list('vendor', flat=True).distinct()
-
-    # Retrieve the counts for each vendor and store in sipcount
-    for name in sipname:
-        vendor_count = voip.objects.filter(vendor=name).count()
-        sipcount.append(vendor_count)
-
+def home(request):
     assets = it_asset.objects.all()
     dashboards = dashboard.objects.all()
     assets_counts = {}
 
     for db in dashboards:
-        assets_for_dashboard = assets.filter(assetname=db.title)
+        # Filter assets related to the current dashboard
+        assets_for_dashboard = assets.filter(assetname=db.title)  # Assuming 'assetname' is the correct field
 
         for asset_name in assets_for_dashboard.values_list('assetname', flat=True).distinct():
-            asset_statuses = assets_for_dashboard.filter(assetname=asset_name).values_list('status', flat=True).distinct()
+            # Filter assets with the current asset name
+            assets_with_name = assets_for_dashboard.filter(assetname=asset_name)
+            asset_statuses = assets_with_name.values_list('status', flat=True).distinct()
 
             total_quantity = 0
             status_counts = {}
             
             for status in asset_statuses:
-                sts = assets_for_dashboard.filter(assetname=asset_name, status=status)
-                count = assets_for_dashboard.filter(assetname=asset_name, status=status).count()
+                count = assets_with_name.filter(status=status).count()
                 status_counts[status] = count
                 total_quantity += count
 
-            assets_counts[asset_name] = {'dashboard': db.title, 'status_counts': status_counts, 'total_quantity': total_quantity}
-            
-
+            assets_counts[asset_name] = {
+                'dashboard': db.title,
+                'status_counts': status_counts,
+                'total_quantity': total_quantity
+            }
     
-    
-    context = {'showassets': assets_counts, 'sipcount':sipcount, 'sipname':sipname }
+    context = {'showassets': assets_counts}
     return render(request, 'index.html', context)
-    
-@login_required   
-# Filter assets based on the clicked asset_name
-def stus(request, asset_name):
-    asset_list = it_asset.objects.filter(assetname=asset_name)
-
-    context = {
-        'asset_list': asset_list,
-    }
-    return render(request, 'stus.html', context)
 
 @login_required   
 def itassetlist(request):
@@ -67,61 +55,135 @@ def itassetlist(request):
         
 
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.utils.dateparse import parse_date
+from django.db import IntegrityError
+from django.contrib import messages
+from .models import dashboard, assetname, assetcat, manufacture, vendor, wrnty, it_asset  # Import your models
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.db import IntegrityError
+from django.utils.dateparse import parse_date
+from .models import dashboard, assetname, assetcat, manufacture, vendor, wrnty, it_asset
+
 @login_required
 def add_asset(request):
-    assetname = dashboard.objects.all()
+    assets = dashboard.objects.all()
+    assetnames = assetname.objects.all().order_by('name')
+    assetcats = assetcat.objects.all().order_by('name')
+    manufactures = manufacture.objects.all().order_by('name')
+    vendors = vendor.objects.all().order_by('name')
+    wrntys = wrnty.objects.all()
 
-    
     if request.method == "POST":
-        asname = request.POST['asname'].upper()
-        asid = request.POST['asid'].upper()
-        ascat = request.POST['ascat']
-        
-        pdate = request.POST['dop']
-        pdate = parse_date(pdate) if pdate else None
-        
-        pfrom = request.POST['pfrom'].title()
-        manft = request.POST['manft'].title()
-        model = request.POST['model'].title()
-        sno = request.POST['sno'].upper()
-        inv = request.POST['inv'].upper()
-        status = request.POST['status']
-        wrnty = request.POST['wrnty'].title()
-        value = request.POST['value']
-        dayuser = request.POST['dayuser'].title()
-        nightuser = request.POST['nightuser'].title()
-        gby = request.POST['gby'].title()
-        dsts = request.POST['dsts'].title()
-        
-        ddate = request.POST.get('ddate')
-        ddate = parse_date(pdate) if ddate else None
-        ddate = pdate.strftime('%Y-%m-%d') if ddate else None        
-        
-        des = request.POST['des'].title()
-        
-        # Create the it_asset object and save it to the database
-        qry = it_asset.objects.create(
-            assetname=asname, assetID=asid, assetcat=ascat, purchasedate=pdate,
-            purchasefrom=pfrom, manufacturer=manft, model=model, serialno=sno,
-            invono=inv, status=status, warranty=wrnty, value=value, dayuser=dayuser,
-            nightuser=nightuser, givenby=gby, Dstatus=dsts, Ddate=ddate,
-            description=des
-        )
-        
-        # Save the created object
-        qry.save()
+        asname = request.POST.get('asname', '').upper()
+        asid = request.POST.get('asid', '').upper()
+        ascat_name = request.POST.get('ascat', '')
+        ascat = assetcat.objects.filter(name=ascat_name).first()  # Ensure matching ForeignKey
+        pdate_str = request.POST.get('dop', '')
+        pdate = parse_date(pdate_str) if pdate_str else None
+        pfrom = request.POST.get('pfrom', '').title()
+        manft = request.POST.get('manft', '').title()
+        model = request.POST.get('model', '').title()
+        sno = request.POST.get('sno', '').upper()
+        inv = request.POST.get('inv', '').upper()
+        status = request.POST.get('status', '')
+        warranty = request.POST.get('warranty', '').title()
+        value = request.POST.get('value', '')
+        dayuser = request.POST.get('dayuser', '').title()
+        nightuser = request.POST.get('nightuser', '').title()
+        gby = request.POST.get('gby', '').title()
+        dsts = request.POST.get('dsts', '').title()
+        ddate_str = request.POST.get('ddate', '')
+        ddate = parse_date(ddate_str) if ddate_str else None
+        ddate_formatted = ddate.strftime('%Y-%m-%d') if ddate else None
+        des = request.POST.get('des', '').title()
+
+        try:
+            # Create the it_asset object and save it to the database
+            it_asset.objects.create(
+                assetname=asname, assetID=asid, assetcat=ascat, purchasedate=pdate,
+                purchasefrom=pfrom, manufacturer=manft, model=model, serialno=sno,
+                invono=inv, status=status, warranty=warranty, value=value, dayuser=dayuser,
+                nightuser=nightuser, givenby=gby, Dstatus=dsts, Ddate=ddate,
+                description=des
+            )
+            messages.success(request, "Asset added successfully.")
+        except IntegrityError:
+            messages.error(request, "Asset ID already exists.")
+            print("IntegrityError caught: Asset ID already exists.")  # Debugging statement
+            return redirect('add_asset')  # Redirect back to the form page to show the error
+
+    context = {
+        'assetnames': assetnames,
+        'assetcats': assetcats,
+        'assets': assets,
+        'manufactures': manufactures,
+        'vendors': vendors,
+        'wrntys': wrntys,
+    }
+
+    return render(request, 'add_asset.html', context)
     
-    # Render the template with assetname context
-    return render(request, 'add_asset.html', {'assetname': assetname})
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.db import IntegrityError
+from .models import it_asset, userlist  # Import your models
+
+def enduser(request):
+    # Get all asset records where assetname is "CPU" or "MONITOR"
+    cpu_assets = it_asset.objects.filter(assetname="CPU")
+    monitor_assets = it_asset.objects.filter(assetname="MONITOR")
+
+    if request.method == "POST":
+        cpu_id = request.POST.get('cpu_id', '').upper()
+        monitor_id = request.POST.get('monitor_id', '').upper()
+        sec_monitor_id = request.POST.get('sec_monitor_id', '')
+        project = request.POST.get('project', '')
+        emp_id = request.POST.get('emp_id', '').upper()  # Ensure emp_id is uppercase
+        shift = request.POST.get('shift', '')
+
+        # Check if the combination of cpu_id and shift already exists
+        if userlist.objects.filter(cpu_id=cpu_id, shift=shift).exists():
+            messages.error(request, "The combination of CPU ID and Shift already exists.")
+            return redirect('enduser')  # Redirect back to the form page to show the error
+
+        # Check if the emp_id already exists
+        if userlist.objects.filter(emp_id=emp_id).exists():
+            messages.error(request, "Employee ID already exists.")
+            return redirect('enduser')  # Redirect back to the form page to show the error
+
+        try:
+            # Create the userlist object and save it to the database
+            userlist.objects.create(
+                cpu_id=cpu_id, monitor_id=monitor_id, sec_monitor_id=sec_monitor_id, project=project,
+                emp_id=emp_id, shift=shift
+            )
+            messages.success(request, "Asset added successfully.")
+            return redirect('success_page')  # Replace with your success page URL
+        except IntegrityError:
+            messages.error(request, "An error occurred while saving the asset.")
+            return redirect('enduser')  # Redirect back to the form page
+
+    context = {
+        'cpu_assets': cpu_assets,
+        'monitor_assets': monitor_assets,
+    }
+    
+    return render(request, 'enduser.html', context)
+
 
 
     
 @login_required  
 def edit_asset(request,sno):
-    assetname = dashboard.objects.all()
+    asset = dashboard.objects.all()
     data = it_asset.objects.get(sno = sno)
     if request.method == "POST":
-        data.assetname = request.POST['asname'].upper().replace(' ', '_')
+        data.asset = request.POST['asname'].upper().replace(' ', '_')
         data.assetID           =   request.POST   ['asid'].upper()
         data.assetcat          =   request.POST   ['ascat']
         data.purchasedate      =   request.POST   ['pdate']
@@ -146,7 +208,7 @@ def edit_asset(request,sno):
         data.description       =   request.POST   ['des'].title()
         data.save()
         return redirect (itassetlist)
-    return render(request,'edit_asset.html', {'data':data,'assetname' : assetname})
+    return render(request,'edit_asset.html', {'data':data,'asset' : asset})
     
 @login_required
 def delasset(request,sno):
@@ -161,7 +223,7 @@ def deldashboard(request,sno):
     
 @login_required    
 def search(request,sno):
-    results = it_asset.objects.filter(assetname=sno)  # Replace `name` with the field you want to search on
+    results = it_asset.objects.filter(asset=sno)  # Replace `name` with the field you want to search on
     context = {'results': results}
     return render(request, 'itassetlist.html', context)
 
@@ -220,9 +282,9 @@ def download_excel(request):
     # Create a new Excel workbook and add data to it
     wb = openpyxl.Workbook()
     ws = wb.active
-    ws.append(['ASSETNAME','ASSETID','ASSETCAT','PURCHASE DATE','PURCHASE FROM','MANUFACTURE','MODEL','SERIAL NUMBER','INVOICE NUMBER','STATUS' ,'WARRANTY' ,'VALUE'  ,'DAY USER','NIGHT USER'  ,'GIVEN BY','DIS STATUS','DIS DATE','DESCRIPTION'])
+    ws.append(['asset','ASSETID','ASSETCAT','PURCHASE DATE','PURCHASE FROM','MANUFACTURE','MODEL','SERIAL NUMBER','INVOICE NUMBER','STATUS' ,'WARRANTY' ,'VALUE'  ,'DAY USER','NIGHT USER'  ,'GIVEN BY','DIS STATUS','DIS DATE','DESCRIPTION'])
     for item in data:
-        ws.append([item.assetname,item.assetID,item.assetcat,item.purchasedate,item.purchasefrom,item.manufacturer,item.model,item.serialno,item.invono,item.status,item.warranty,item.value,item.dayuser,item.nightuser,item.givenby,item.Dstatus,item.Ddate,item.description])
+        ws.append([item.asset,item.assetID,item.assetcat,item.purchasedate,item.purchasefrom,item.manufacturer,item.model,item.serialno,item.invono,item.status,item.warranty,item.value,item.dayuser,item.nightuser,item.givenby,item.Dstatus,item.Ddate,item.description])
     # Save the workbook to response
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=Asset_Doc.xlsx'
@@ -261,7 +323,7 @@ def pdf(request, sno):
         response = HttpResponse(content_type='application/pdf')
         
         # Set the Content-Disposition header to force download the PDF file
-        response['Content-Disposition'] = f'attachment; filename="{pdfdata.assetname}_report.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="{pdfdata.asset}_report.pdf"'
 
         # Create a PDF object using the response object as its file
         p = canvas.Canvas(response, pagesize=letter)
@@ -275,7 +337,7 @@ def pdf(request, sno):
         data_spacing = 200
 
         data_pairs = [
-            ('Asset Name', pdfdata.assetname),
+            ('Asset Name', pdfdata.asset),
             ('Asset ID', pdfdata.assetID),
             ('Asset Category', pdfdata.assetcat),
             ('Purchase Date', pdfdata.purchasedate),

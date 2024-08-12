@@ -1,0 +1,213 @@
+{%include 'header.html'%}
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+<style>
+  .hide {
+    display: none;
+  }
+
+.messages {
+    margin: 10px 0;
+}
+
+.alert {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+  
+</style>
+
+<div class="page-header">
+<div class="row">
+<div class="col-sm-12">
+<ul class="breadcrumb">
+<li class="breadcrumb-item"><a href="#">IT TOOLS </a></li>
+<li class="breadcrumb-item"><i class="feather-chevron-right"></i></li>
+<li class="breadcrumb-item active"> Add Asset </li>
+</ul>
+</div>
+</div>
+</div>
+{% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="row">
+<div class="col-sm-12">
+<div class="card">
+<div class="card-body">
+
+<form action"" method="post">
+{%csrf_token%}
+
+<div class="row">
+<div class="col-12">
+<div class="form-heading">
+<h4>Add Assets</h4>
+</div>
+</div>
+
+
+<div class="col-12 col-md-6 col-xl-6">
+    <div class="form-group local-forms">
+        <label>CPU ID<span class="login-danger"></span></label>
+            <select id="cpu-id" name="cpu_id" class="form-control select">
+                <option value="" disabled selected>Select CPU Asset</option>
+                {% for asset in cpu_assets %}
+                    <option value="{{ asset.assetID }}">{{ asset.assetID }} - {{ asset.model }}</option>
+                {% endfor %}
+            </select>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('.select').select2({
+        allowClear: true 
+    });
+});
+</script>
+
+<div class="col-12 col-md-6 col-xl-6">
+    <div class="form-group local-forms">
+        <label>Monitor ID<span class="login-danger"></span></label>
+            <select id="cpu-id" name="monitor_id" class="form-control select">
+                <option value="" disabled selected>Select CPU Asset</option>
+                {% for asset in monitor_assets %}
+                    <option value="{{ asset.assetID }}">{{ asset.assetID }} - {{ asset.model }}</option>
+                {% endfor %}
+            </select>
+    </div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6">
+    <div class="form-group local-forms">
+        <label>Secondary Monitor ID<span class="login-danger"></span></label>
+            <select id="cpu-id" name="sec_monitor_id" class="form-control select">
+                <option value="" disabled selected>Select CPU Asset</option>
+                {% for asset in monitor_assets %}
+                    <option value="{{ asset.assetID }}">{{ asset.assetID }} - {{ asset.model }}</option>
+                {% endfor %}
+            </select>
+    </div>
+</div>
+
+
+<div class="col-12 col-md-6 col-xl-6">
+    <div class="form-group local-forms">
+        <label>Project<span class="login-danger"></span></label>
+            <select id="cpu-id" name="project" class="form-control select">
+                <option value="" disabled selected>Select CPU Asset</option>
+                {% for asset in monitor_assets %}
+                    <option value="{{ asset.assetID }}">{{ asset.assetID }} - {{ asset.model }}</option>
+                {% endfor %}
+            </select>
+    </div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6">
+    <div class="form-group local-forms">
+        <label>Employee ID<span class="login-danger"></span></label>
+            <select id="cpu-id" name="emp_id" class="form-control select">
+                <option value="" disabled selected>Select CPU Asset</option>
+                {% for asset in monitor_assets %}
+                    <option value="{{ asset.assetID }}">{{ asset.assetID }} - {{ asset.model }}</option>
+                {% endfor %}
+            </select>
+    </div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6">
+<div class="form-group local-forms">
+<label>Name <span class="login-danger"></span></label>
+<input class="form-control" type="text" name="name">
+</div>
+</div>
+
+<div class="col-12 col-md-6 col-xl-6">
+	<div class="form-group local-forms">
+	<label>Shift <span class="login-danger"></span></label>
+		<select class="form-control select" name="pfrom">
+			<option value="" disabled selected>Select Vendor</option>	
+			<option value="Day" >Day</option>	
+			<option value="Night" >Night</option>	
+		</select>
+	</div>
+</div>
+
+<div class="col-12">
+<div class="doctor-submit text-end">
+<button type="submit" class="btn btn-primary submit-form me-2">Submit</button>
+<a href="{% url 'enduser' %}" class="btn btn-primary cancel-form">Cancel</a>
+</div>
+</div>
+
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="sidebar-overlay" data-reff=""></div>
+
+</body>
+
+<script src="{% static 'assets/js/bootstrap-datetimepicker.min.js' %}"></script>
+
+<script>
+  const optionSelect = document.getElementById('options');
+  const disposeTabs = document.querySelectorAll('.dispose-tab');
+  const inUseTabs = document.querySelectorAll('.in-use-tab');
+
+  optionSelect.addEventListener('change', function() {
+    if (optionSelect.value === 'Disposed') {
+      disposeTabs.forEach(tab => {
+        tab.style.display = 'block';
+      });
+      inUseTabs.forEach(tab => {
+        tab.style.display = 'none';
+      });
+    } else if (optionSelect.value === 'In Use') {
+      inUseTabs.forEach(tab => {
+        tab.style.display = 'block';
+      });
+      disposeTabs.forEach(tab => {
+        tab.style.display = 'none';
+      });
+    } else {
+      disposeTabs.forEach(tab => {
+        tab.style.display = 'none';
+      });
+      inUseTabs.forEach(tab => {
+        tab.style.display = 'none';
+      });
+    }
+  });
+</script>
+
+  
+
+</html>
