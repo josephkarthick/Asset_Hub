@@ -97,6 +97,7 @@
 						{% if user.is_staff %}	
 							<li class="{% if request.resolver_match.url_name == "add_asset"   %} active {% endif  %}">	<a href="{% url 'add_asset'%}"> Add Asset  </a> </li>
 							<li class="{% if request.resolver_match.url_name == "enduser"   %} active {% endif  %}">	<a href="{% url 'enduser'%}"> Add User</a> </li>
+							<li class="{% if request.resolver_match.url_name == "enduserlist"   %} active {% endif  %}">	<a href="{% url 'enduserlist'%}"> User List</a> </li>
 						{% endif %}		
 							<li class="{% if request.resolver_match.url_name == "voiplist"   %} active {% endif  %}">  <a href="{% url 'voiplist' %}"> Voip List</a> </li>
 						{% if user.is_staff %}	

@@ -1,9 +1,7 @@
 from django.contrib import admin
-from asset.models import cred, it_asset, voip, dashboard, CustomUser, assetname, assetcat,vendor,manufacture,wrnty
+from asset.models import it_asset, voip, dashboard, CustomUser, assetname, assetcat,vendor,manufacture,wrnty,projects,empdata
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
-
-
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
@@ -22,6 +20,8 @@ admin.site.register(assetcat),
 admin.site.register(vendor),
 admin.site.register(manufacture),
 admin.site.register(wrnty),
+admin.site.register(projects),
+admin.site.register(empdata),
 
 @admin.register(assetname)
 class AssetNameAdmin(admin.ModelAdmin):

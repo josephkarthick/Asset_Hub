@@ -119,7 +119,7 @@ $(document).ready(function() {
 
 <div class="col-12 col-md-6 col-xl-6">
 	<div class="form-group local-forms">
-	<label>Category <span class="login-danger"></span></label>
+	<label>Purchase From <span class="login-danger"></span></label>
 		<select class="form-control select" name="pfrom">
 			<option value="" disabled selected>Select Vendor</option>
 		{% for vendor in vendors %}			
@@ -194,45 +194,12 @@ $(document).ready(function() {
     </div>
 </div>
 
-
-<div class="col-12 col-md-6 col-xl-6 hide in-use-tab">
-<div class="form-group local-forms">
-<label>Day User<span class="login-danger"></span></label>
-<input class="form-control" type="text" name="dayuser">
-</div>
-</div>
-
-<div class="col-12 col-md-6 col-xl-6 hide in-use-tab">
-<div class="form-group local-forms">
-<label>Night User<span class="login-danger"></span></label>
-<input class="form-control" type="text" name="nightuser">
-</div>
-</div>
-
-<div class="col-12 col-md-6 col-xl-6 hide in-use-tab">
-<div class="form-group local-forms">
-<label>Given BY<span class="login-danger"></span></label>
-<input class="form-control" type="text" name="gby">
-</div>
-</div>
-
 <div class="col-12 hide dispose-tab">
-<div class="form-heading">
-<h4>Disposal Status</h4>
-</div>
+	<div class="form-heading">
+		<h4>Disposal Status</h4>
+	</div>
 </div>
 
-<div class="col-12 col-md-6 col-xl-6 hide dispose-tab">
-<div class="form-group local-forms">
-<label>Status <span class="login-danger"></span></label>
-<select class="form-control select" name="dsts" >
-<option>Select Status</option>
-<option>Not Working </option>
-<option>Damaged    </option>
-<option>Moved to Scrap</option>
-</select>
-</div>
-</div>
 
 <div class="col-12 col-md-6 col-xl-6 hide dispose-tab">
 <div class="form-group local-forms cal-icon">

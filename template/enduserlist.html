@@ -69,83 +69,25 @@
   <div class="table-wrapper">
     <table class="datatable mb-0" >  <!--data table.min.js iDisplayLength -->
         <thead>
-
-{% if user.is_staff %}				
-				<th>	Edit     </th>
-				<th>	Asset ID       </th>
-{% endif %}				
-				<th>	Asset Name     </th>
-{% if user.is_staff %}				
-				<th>	Asset Cat      </th>
-{% endif %}					
-				<th>	Purchase Date  </th>
-				<th>	Purchase From  </th>
-{% if user.is_staff %}					
-				<th>	Manufacturer  </th>
-{% endif %}				
-				<th>	Model         </th>
-				<th>	Serial No      </th>
-				<th>	Inovice      </th>
-{% if user.is_staff %}					
-				<th>	Status      </th> 
-				<th>	Warranty      </th>
-{% endif %}					
-				<th>	Value         </th>
-{% if user.is_staff %}			
-				<th>	Dayuser     </th>				
-				<th>	Nightuser     </th>
-				<th>	Givenby       </th>
-				<th>	Dstatus       </th>
-				<th>	Ddate         </th>
-				<th>	Description   </th>
-{% endif %}
+			<th> Employee ID </th>
+			<th> Employee Name </th>
+			<th> Project </th>
+			<th> Shift </th>
+			<th> CPU Number </th>
+			<th> Monitor Number </th>
+			<th> Secondary Monitor Number </th>
         </thead>
 <tbody id="data">
+
+{% for i in endusers %}	
 <tr>
-
-{% for i in asdata %}
-
-{% if user.is_staff %}
-		<td class="text-end">
-			<div class="dropdown dropdown-action">
-			<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-				<div class="dropdown-menu dropdown-menu-end">
-					<a class="dropdown-item" href="{% url 'edit_asset' i.sno %}"><i class="fa-solid fa-pen-to-square m-r-5"></i> Edit</a>
-					<a class="dropdown-item" href="{% url 'delete_asset' i.sno %}"><i class="fa fa-trash-alt m-r-5"></i> Delete</a>
-					<a class="dropdown-item" href="{% url 'pdf' i.sno %}"><i class="fa fa-trash-alt m-r-5"></i> Print</a>
-				</div>
-			</div>
-
-
-		</td>
-		<td>{{ i.assetID        }}</td>
-{% endif %}
-		<td>{{ i.assetname      }}</td>
-{% if user.is_staff %}		
-		<td>{{ i.assetcat       }}</td>
-{% endif %}		
-		<td>{{ i.purchasedate   }}</td>
-		<td>{{ i.purchasefrom   }}</td>
-{% if user.is_staff %}			
-		<td>{{ i.manufacturer   }}</td>
-{% endif %}			
-		<td>{{ i.model          }}</td>
-		<td>{{ i.serialno       }}</td>
-		<td>{{ i.invono         }}</td>
-{% if user.is_staff %}		
-		<td>{{ i.status         }}</td>
-		<td>{{ i.warranty       }}</td>
-{% endif %}		
-		<td>{{ i.value          }}</td>
-{% if user.is_staff %}		
-		<td>{{ i.dayuser        }}</td>
-		<td>{{ i.nightuser      }}</td>
-		<td>{{ i.givenby        }}</td>
-		<td>{{ i.Dstatus        }}</td>
-		<td>{{ i.Ddate          }}</td>
-		<td>{{ i.description    }}</td>
-{% endif %}
-		
+		<td>{{ i.emp_id        }}</td>
+		<td>{{ i.emp_name        }}</td>
+		<td>{{ i.project      }}</td>
+		<td>{{ i.shift       }}</td>
+		<td>{{ i.cpu_id   }}</td>
+		<td>{{ i.monitor_id   }}</td>
+		<td>{{ i.sec_monitor_id   }}</td>	
 </tr>
 {% endfor %}
 
