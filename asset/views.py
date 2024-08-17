@@ -2,7 +2,7 @@ from asset.models   import it_asset,voip,  dashboard, assetname, assetcat,manufa
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.db.models.functions import ExtractYear
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http      import HttpResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -113,10 +113,6 @@ def add_asset(request):
 
     return render(request, 'add_asset.html', context)
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.db import IntegrityError
-from .models import it_asset, projects, empdata, userlist
 
 def enduser(request):
     # Query assets and projects
@@ -133,20 +129,20 @@ def enduser(request):
         project = request.POST.get('project', '')
         emp_id = request.POST.get('emp_id', '').upper()
         shift = request.POST.get('shift', '')
-
-        # Check for existing records
-        existing_record = userlist.objects.filter(cpu_id=cpu_id, shift=shift).exists()
-        if existing_record:
-            messages.error(request, "The combination of CPU ID and Shift already exists.")
-            return redirect('enduser')  # Redirect back to the form page to show the error
-
+        
         # Check if employee ID already exists
         if emp_id:
             if userlist.objects.filter(emp_id=emp_id).exists():
                 # Redirect to edit_enduser with emp_id
                 messages.error(request, "The combination of CPU ID and Shift already exists.")
                 return redirect('edit_enduser', emp_id=emp_id)
-
+                
+        # Check for existing records
+        existing_record = userlist.objects.filter(cpu_id=cpu_id, shift=shift).exists()
+        if existing_record:
+            messages.error(request, "The combination of CPU ID and Shift already exists.")
+            return redirect('enduser')  # Redirect back to the form page to show the error
+            
         try:
             # Create and save the userlist object
             userlist.objects.create(
@@ -168,44 +164,13 @@ def enduser(request):
         'employees': employees,
         'employees_data': employees_data,
     }
-
     return render(request, 'enduser.html', context)
-
-
-from django.shortcuts import render, get_object_or_404
-from .models import userlist, it_asset, projects, empdata
 
 def edit_enduser(request, emp_id):
     # Fetch the employee data if emp_id is provided
     employee = get_object_or_404(userlist, emp_id=emp_id)
-
-    if request.method == "POST":
-        cpu_id = request.POST.get('cpu_id', '').upper()
-        monitor_id = request.POST.get('monitor_id', '').upper()
-        sec_monitor_id = request.POST.get('sec_monitor_id', '')
-        project = request.POST.get('project', '')
-        shift = request.POST.get('shift', '')
-
-        # Update the existing record
-        employee.cpu_id = cpu_id
-        employee.monitor_id = monitor_id
-        employee.sec_monitor_id = sec_monitor_id
-        employee.project = project
-        employee.shift = shift
-        employee.save()
-
-        messages.success(request, "Employee updated successfully.")
-        return redirect('enduserlist')  # Redirect to the list view after success
-
-    context = {
-        'employee': employee,
-        'cpu_assets': it_asset.objects.filter(assetname="CPU"),
-        'monitor_assets': it_asset.objects.filter(assetname="MONITOR"),
-        'projectname': projects.objects.all().order_by("name"),
-        'employees': empdata.objects.all()
-    }
-
-    return render(request, 'edit_enduser.html', context)
+    
+    return render(request, 'edit_enduser.html')
 
 
 def enduserlist(request):

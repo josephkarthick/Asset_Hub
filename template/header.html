@@ -79,12 +79,12 @@
 		<div id="sidebar-menu" class="sidebar-menu logout-btn">
 		
 		<div>
-			<a href="{% url 'home' %}"><span class="menu-side"><img src="{% static 'assets/img/icons/Dashboard.svg'' %}" alt=""></span> <span>Dashboard</span></a>
+		
+			<a href="{% url 'home' %}"><span class="menu-side"><img src="{% static 'assets/img/icons/Dashboard.svg' %}" alt=""></span> <span>Dashboard</span></a>
 		</div>
 		
 		<ul>
 			<li class="menu-title"></li>
-				<li class="submenu ">
 			<ul style="display: none;">
 			<li class="{% if request.resolver_match.url_name == "home" %}active{% endif %}"><a href="{% url 'home' %}">IT Dashboard</a></li>
 		</ul>
